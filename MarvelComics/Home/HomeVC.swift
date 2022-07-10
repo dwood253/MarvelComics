@@ -43,6 +43,7 @@ class HomeVC: UIViewController {
     
     //MARK: UI Setup
     fileprivate func setupUI() {
+        self.view.backgroundColor = Color.background
         setupComicCollection()
     }
     
@@ -57,6 +58,7 @@ class HomeVC: UIViewController {
         comicsCollection.delegate = self
         comicsCollection.dataSource = self
         comicsCollection.register(comicCollectionCell.self, forCellWithReuseIdentifier: CELL_ID)
+        comicsCollection.backgroundColor = Color.background
         
         self.view.addSubview(comicsCollection)
         NSLayoutConstraint.activate([
@@ -130,7 +132,7 @@ extension HomeVC: UICollectionViewDataSource, UICollectionViewDelegate, UICollec
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = comicsCollection.cellForItem(at: indexPath) as! comicCollectionCell
         let comicFrame = CGRect(x: cell.frame.origin.x + CELL_SPACING/2, y: cell.frame.origin.y - comicsCollection.contentOffset.y, width: cell.frame.width, height: cell.frame.height)
-        let comicDetailView = ComicDetailsVCViewController(image: cell.cellImage.image, comicFrame: comicFrame, containerFrame: comicsCollection.frame,comic: comics[indexPath.row], isPlaceholderImage: cell.cellImage.isPlaceholder)
+        let comicDetailView = ComicDetailsVCViewController(image: cell.cellImage.image, comicFrame: comicFrame, comic: comics[indexPath.row], isPlaceholderImage: cell.cellImage.isPlaceholder)
         comicDetailView.view.frame = self.view.frame
         comicDetailView.modalPresentationStyle = .overFullScreen
         self.present(comicDetailView, animated: false)
@@ -209,6 +211,8 @@ class comicCollectionCell: UICollectionViewCell {
             } else {
                 self.cellImage.image = UIImage(named: "placeholder")
                 self.cellImage.isPlaceholder = true
+                self.cellImage.layer.borderWidth = 2
+                self.cellImage.layer.borderColor = UIColor.black.cgColor
             }
         }, completion: nil)
     }
@@ -216,6 +220,7 @@ class comicCollectionCell: UICollectionViewCell {
     override func prepareForReuse() {
         self.cellImage.image = nil
         self.cellImage.isPlaceholder = false
+        self.cellImage.layer.borderWidth = 0
     }
 }
 

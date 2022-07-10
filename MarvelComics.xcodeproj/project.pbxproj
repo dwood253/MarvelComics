@@ -22,6 +22,7 @@
 		65A4E56228763739001C4B9A /* Comic_Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A4E56128763739001C4B9A /* Comic_Data.swift */; };
 		65B7E0D92879EF6D0078977D /* ComicDetailsVCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B7E0D82879EF6D0078977D /* ComicDetailsVCViewController.swift */; };
 		65B7E0DF287B26310078977D /* ComicUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B7E0DE287B26310078977D /* ComicUIImageView.swift */; };
+		65B7E0E1287B54B00078977D /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B7E0E0287B54B00078977D /* Color.swift */; };
 		65FCF9D628778D1300AB36E7 /* Extension+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FCF9D528778D1300AB36E7 /* Extension+UIView.swift */; };
 		65FCF9D82878BDC800AB36E7 /* Extension+UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FCF9D72878BDC800AB36E7 /* Extension+UIViewController.swift */; };
 		65FCF9DB2878D1A900AB36E7 /* ApiKeyHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FCF9DA2878D1A900AB36E7 /* ApiKeyHelper.swift */; };
@@ -65,6 +66,7 @@
 		65A4E56128763739001C4B9A /* Comic_Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comic_Data.swift; sourceTree = "<group>"; };
 		65B7E0D82879EF6D0078977D /* ComicDetailsVCViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComicDetailsVCViewController.swift; sourceTree = "<group>"; };
 		65B7E0DE287B26310078977D /* ComicUIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComicUIImageView.swift; sourceTree = "<group>"; };
+		65B7E0E0287B54B00078977D /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		65FCF9D528778D1300AB36E7 /* Extension+UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIView.swift"; sourceTree = "<group>"; };
 		65FCF9D72878BDC800AB36E7 /* Extension+UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIViewController.swift"; sourceTree = "<group>"; };
 		65FCF9DA2878D1A900AB36E7 /* ApiKeyHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiKeyHelper.swift; sourceTree = "<group>"; };
@@ -201,6 +203,7 @@
 			children = (
 				65FCF9D528778D1300AB36E7 /* Extension+UIView.swift */,
 				65FCF9D72878BDC800AB36E7 /* Extension+UIViewController.swift */,
+				65B7E0E0287B54B00078977D /* Color.swift */,
 			);
 			path = "UIKit Extensions";
 			sourceTree = "<group>";
@@ -356,6 +359,7 @@
 				65B7E0DF287B26310078977D /* ComicUIImageView.swift in Sources */,
 				65A4E56228763739001C4B9A /* Comic_Data.swift in Sources */,
 				65A4E55F28763658001C4B9A /* NetworkManager.swift in Sources */,
+				65B7E0E1287B54B00078977D /* Color.swift in Sources */,
 				65A4E55D287610F6001C4B9A /* ApiStrings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
