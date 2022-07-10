@@ -20,6 +20,7 @@
 		65A4E55D287610F6001C4B9A /* API_Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A4E55C287610F6001C4B9A /* API_Strings.swift */; };
 		65A4E55F28763658001C4B9A /* Network_Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A4E55E28763658001C4B9A /* Network_Manager.swift */; };
 		65A4E56228763739001C4B9A /* Comic_Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A4E56128763739001C4B9A /* Comic_Data.swift */; };
+		65B7E0D92879EF6D0078977D /* ComicDetailsVCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B7E0D82879EF6D0078977D /* ComicDetailsVCViewController.swift */; };
 		65FCF9D628778D1300AB36E7 /* Extension+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FCF9D528778D1300AB36E7 /* Extension+UIView.swift */; };
 		65FCF9D82878BDC800AB36E7 /* Extension+UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FCF9D72878BDC800AB36E7 /* Extension+UIViewController.swift */; };
 		65FCF9DB2878D1A900AB36E7 /* ApiKeyHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FCF9DA2878D1A900AB36E7 /* ApiKeyHelper.swift */; };
@@ -61,6 +62,7 @@
 		65A4E55C287610F6001C4B9A /* API_Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API_Strings.swift; sourceTree = "<group>"; };
 		65A4E55E28763658001C4B9A /* Network_Manager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network_Manager.swift; sourceTree = "<group>"; };
 		65A4E56128763739001C4B9A /* Comic_Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comic_Data.swift; sourceTree = "<group>"; };
+		65B7E0D82879EF6D0078977D /* ComicDetailsVCViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComicDetailsVCViewController.swift; sourceTree = "<group>"; };
 		65FCF9D528778D1300AB36E7 /* Extension+UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIView.swift"; sourceTree = "<group>"; };
 		65FCF9D72878BDC800AB36E7 /* Extension+UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIViewController.swift"; sourceTree = "<group>"; };
 		65FCF9DA2878D1A900AB36E7 /* ApiKeyHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiKeyHelper.swift; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 			children = (
 				65FCF9DC2878D79200AB36E7 /* API_KEYS */,
 				655D82B52877515000CBF1E2 /* Home */,
+				65B7E0D72879EF350078977D /* ComicDetails */,
 				65FCF9D428778CEC00AB36E7 /* UIKit Extensions */,
 				65A4E5602876370B001C4B9A /* Data_Models */,
 				65A4E55628760FC3001C4B9A /* Networking */,
@@ -172,6 +175,14 @@
 				65A4E56128763739001C4B9A /* Comic_Data.swift */,
 			);
 			path = Data_Models;
+			sourceTree = "<group>";
+		};
+		65B7E0D72879EF350078977D /* ComicDetails */ = {
+			isa = PBXGroup;
+			children = (
+				65B7E0D82879EF6D0078977D /* ComicDetailsVCViewController.swift */,
+			);
+			path = ComicDetails;
 			sourceTree = "<group>";
 		};
 		65FCF9D428778CEC00AB36E7 /* UIKit Extensions */ = {
@@ -324,6 +335,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				65A4E52B28760F36001C4B9A /* HomeVC.swift in Sources */,
+				65B7E0D92879EF6D0078977D /* ComicDetailsVCViewController.swift in Sources */,
 				65A4E52728760F36001C4B9A /* AppDelegate.swift in Sources */,
 				65FCF9D628778D1300AB36E7 /* Extension+UIView.swift in Sources */,
 				65FCF9DB2878D1A900AB36E7 /* ApiKeyHelper.swift in Sources */,

@@ -55,12 +55,11 @@ class HomeVC: UIViewController {
         comicsCollection.translatesAutoresizingMaskIntoConstraints = false
         comicsCollection.delegate = self
         comicsCollection.dataSource = self
+        comicsCollection.contentInset = UIEdgeInsets(top: 0, left: CELL_SPACING/2, bottom: 0, right: CELL_SPACING/2)
         comicsCollection.register(comicCollectionCell.self, forCellWithReuseIdentifier: CELL_ID)
-        //        comicCollection.contentInset = UIEdgeInsets(top: self.view.safeAreaInsets.top, left: 0, bottom: self.view.safeAreaInsets.bottom, right: 0)
-        
         
         self.view.addSubview(comicsCollection)
-        comicsCollection.fillSuperView(insets: UIEdgeInsets(top: 0, left: CELL_SPACING/2, bottom: 0, right: CELL_SPACING/2))
+        comicsCollection.fillSuperView()
     }
     
     //MARK: - Combine Subscriptions
@@ -124,7 +123,12 @@ extension HomeVC: UICollectionViewDataSource, UICollectionViewDelegate, UICollec
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        let cell = comicsCollection.cellForItem(at: indexPath) as! comicCollectionCell
+        let comicFrame = CGRect(x: cell.frame.origin.x + CELL_SPACING/2, y: cell.frame.origin.y - comicsCollection.contentOffset.y, width: cell.frame.width, height: cell.frame.height)
+        let comicDetailView = ComicDetailsVCViewController(image: cell.cellImage.image, comicFrame: comicFrame, containerFrame: comicsCollection.frame,comic: comics[indexPath.row])
+        comicDetailView.view.frame = self.view.frame
+        comicDetailView.modalPresentationStyle = .overFullScreen
+        self.present(comicDetailView, animated: false)
     }
 }
 
