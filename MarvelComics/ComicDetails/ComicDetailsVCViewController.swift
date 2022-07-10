@@ -14,7 +14,15 @@ class ComicDetailsVCViewController: UIViewController {
     
     lazy var containerView: UIView = {
         let v = UIView()
+        v.translatesAutoresizingMaskIntoConstraints = false
         return v
+    }()
+    
+    lazy var scrollView: UIScrollView = {
+        let sv = UIScrollView()
+        sv.translatesAutoresizingMaskIntoConstraints = false
+        sv.backgroundColor = .cyan
+        return sv
     }()
 
     lazy var backBackgroundImage: UIImageView = {
@@ -47,6 +55,7 @@ class ComicDetailsVCViewController: UIViewController {
     }()
     let comicInfo: Comic
     let isPlaceholderImage: Bool
+    var scrollViewTopAnchor: NSLayoutConstraint!
     
     //MARK: - Lifecycle
     init(image: UIImage?, comicFrame: CGRect, containerFrame: CGRect, comic: Comic, isPlaceholderImage: Bool) {
@@ -55,7 +64,7 @@ class ComicDetailsVCViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         comicImage.image = image
         comicImage.frame = comicFrame
-        containerView.frame = containerFrame
+//        containerView.frame = containerFrame
     }
     
     required init?(coder: NSCoder) {
@@ -67,14 +76,42 @@ class ComicDetailsVCViewController: UIViewController {
         setupUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        self.scrollView.contentSize = containerView.frame.size
+        scrollViewTopAnchor.constant = -scrollView.safeAreaInsets.top
     }
     
     //MARK: - Setup UI Elements
     func setupUI() {
         
-        self.view.addSubviews([containerView])
+        self.view.addSubviews([scrollView])
+        scrollViewTopAnchor = scrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor)
+        NSLayoutConstraint.activate([
+            scrollViewTopAnchor,
+            scrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+        ])
+        
+        
+        scrollView.addSubview(containerView)
+        NSLayoutConstraint.activate([
+            containerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            containerView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+            containerView.heightAnchor.constraint(equalToConstant: 900)
+        ])
+        
+        
         containerView.addSubviews([comicImage, closeButton])
         
         closeButton.addTarget(self, action: #selector(closeTapped), for: .touchUpInside)

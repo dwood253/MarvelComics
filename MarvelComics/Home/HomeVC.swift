@@ -38,6 +38,7 @@ class HomeVC: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        comicsCollection.contentInset = UIEdgeInsets(top: 0, left: CELL_SPACING/2, bottom: self.view.safeAreaInsets.bottom, right: CELL_SPACING/2)
     }
     
     //MARK: UI Setup
@@ -55,11 +56,15 @@ class HomeVC: UIViewController {
         comicsCollection.translatesAutoresizingMaskIntoConstraints = false
         comicsCollection.delegate = self
         comicsCollection.dataSource = self
-        comicsCollection.contentInset = UIEdgeInsets(top: 0, left: CELL_SPACING/2, bottom: 0, right: CELL_SPACING/2)
         comicsCollection.register(comicCollectionCell.self, forCellWithReuseIdentifier: CELL_ID)
         
         self.view.addSubview(comicsCollection)
-        comicsCollection.fillSuperView()
+        NSLayoutConstraint.activate([
+            comicsCollection.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            comicsCollection.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            comicsCollection.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            comicsCollection.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+        ])
     }
     
     //MARK: - Combine Subscriptions
@@ -130,6 +135,7 @@ extension HomeVC: UICollectionViewDataSource, UICollectionViewDelegate, UICollec
         comicDetailView.modalPresentationStyle = .overFullScreen
         self.present(comicDetailView, animated: false)
     }
+    
 }
 
 //MARK: - Comic Collection View Cell
@@ -205,6 +211,11 @@ class comicCollectionCell: UICollectionViewCell {
                 self.cellImage.isPlaceholder = true
             }
         }, completion: nil)
+    }
+    
+    override func prepareForReuse() {
+        self.cellImage.image = nil
+        self.cellImage.isPlaceholder = false
     }
 }
 
