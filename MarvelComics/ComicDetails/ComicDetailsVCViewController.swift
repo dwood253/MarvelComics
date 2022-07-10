@@ -24,7 +24,6 @@ class ComicDetailsVCViewController: UIViewController {
     }()
     lazy var comicImage: UIImageView = {
        let imv = UIImageView()
-        imv.contentMode = .scaleAspectFit
         imv.layer.cornerRadius = 4
         imv.clipsToBounds = true
         return imv
@@ -37,14 +36,26 @@ class ComicDetailsVCViewController: UIViewController {
         btn.widthAnchor.constraint(equalToConstant: BUTTON_DIMENSION).isActive = true
         return btn
     }()
+    lazy var imageOverlayTitle: UILabel = {
+       let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.lineBreakMode = .byWordWrapping
+        label.textColor = .white
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        return label
+    }()
+    let comicInfo: Comic
+    let isPlaceholderImage: Bool
     
     //MARK: - Lifecycle
-    init(image: UIImage?, comicFrame: CGRect, containerFrame: CGRect, comic: Comic) {
+    init(image: UIImage?, comicFrame: CGRect, containerFrame: CGRect, comic: Comic, isPlaceholderImage: Bool) {
+        self.isPlaceholderImage = isPlaceholderImage
+        self.comicInfo = comic
         super.init(nibName: nil, bundle: nil)
         comicImage.image = image
         comicImage.frame = comicFrame
         containerView.frame = containerFrame
-
     }
     
     required init?(coder: NSCoder) {
@@ -72,6 +83,20 @@ class ComicDetailsVCViewController: UIViewController {
             closeButton.topAnchor.constraint(equalTo: self.containerView.topAnchor, constant: BUTTON_PADDING),
             closeButton.trailingAnchor.constraint(equalTo: self.containerView.trailingAnchor, constant: -BUTTON_PADDING)
         ])
+
+        if isPlaceholderImage {
+            imageOverlayTitle.text = comicInfo.title ?? ""
+            //add comic image title overlay
+            self.comicImage.addSubview(imageOverlayTitle)
+            NSLayoutConstraint.activate([
+                imageOverlayTitle.widthAnchor.constraint(lessThanOrEqualTo: comicImage.widthAnchor, constant: -10),
+                imageOverlayTitle.centerXAnchor.constraint(equalTo: comicImage.centerXAnchor),
+                imageOverlayTitle.centerYAnchor.constraint(equalTo: comicImage.centerYAnchor)
+            ])
+            comicImage.contentMode = .scaleAspectFill
+        } else {
+            comicImage.contentMode = .scaleAspectFit
+        }
     }
     
     
