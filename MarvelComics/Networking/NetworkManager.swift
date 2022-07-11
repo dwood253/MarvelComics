@@ -78,6 +78,10 @@ class NetworkManager {
             String(format: "%02hhx", $0)
         }.joined()
     }
+    
+    func disposeOfKeys() {
+        self.keys = nil
+    }
 }
 
 enum FetchError: Error {
