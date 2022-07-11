@@ -26,13 +26,17 @@ fileprivate let OPTION_BUTTON_ITEM_PADDING: CGFloat = 12
 fileprivate let OPTION_BUTTON_SEPERATOR_PADDING: CGFloat = 8
 fileprivate let COMIC_OPTIONS_SIDE_PADDING: CGFloat = 5
 
+protocol comicDetailsDelegate {
+    func nextComicClicked()
+    func previousComicClicked()
+}
+
 class ComicDetailsVCViewController: UIViewController {
     
     lazy var containerView: UIView = {
         let v = UIView()
         v.translatesAutoresizingMaskIntoConstraints = false
         v.backgroundColor = Color.background
-        v.alpha = 0
         return v
     }()
     
@@ -47,6 +51,7 @@ class ComicDetailsVCViewController: UIViewController {
         imv.translatesAutoresizingMaskIntoConstraints = false
         imv.contentMode = .scaleAspectFill
         imv.clipsToBounds = true
+        imv.alpha = 0
         return imv
     }()
     lazy var comicImage: UIImageView = {
@@ -76,17 +81,20 @@ class ComicDetailsVCViewController: UIViewController {
     let comicInfo: Comic
     let isPlaceholderImage: Bool
     var scrollViewTopAnchor: NSLayoutConstraint!
+    let comicDelegate: comicDetailsDelegate
     
     lazy var buttonContainer: UIView = {
         let v = UIView()
         v.translatesAutoresizingMaskIntoConstraints = false
+        v.alpha = 0
         return v
     }()
     
     //MARK: - Lifecycle
-    init(image: UIImage?, comicFrame: CGRect, comic: Comic, isPlaceholderImage: Bool) {
+    init(image: UIImage?, comicFrame: CGRect, comic: Comic, isPlaceholderImage: Bool, delegate: comicDetailsDelegate) {
         self.isPlaceholderImage = isPlaceholderImage
         self.comicInfo = comic
+        comicDelegate = delegate
         super.init(nibName: nil, bundle: nil)
         comicImage.image = image
         comicImage.frame = comicFrame
@@ -104,20 +112,8 @@ class ComicDetailsVCViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        let comicMoveAnimation = CABasicAnimation(keyPath: "position")
-        comicMoveAnimation.fromValue = CGPoint(x: comicImage.frame.origin.x + comicImage.frame.size.width/2, y: comicImage.frame.origin.y + comicImage.frame.size.height/2)
-        
-        let centerY = backgroundImage.frame.height/2 + backgroundImage.frame.origin.y
-        let centerX = comicImage.frame.width/2 + COMIC_OPTIONS_SIDE_PADDING
-        
-        let destination = CGPoint(x: centerX, y: centerY)
-        
-        
-        comicMoveAnimation.toValue = destination
-        comicMoveAnimation.duration = 0.5
-        comicMoveAnimation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-        comicImage.layer.add(comicMoveAnimation, forKey: "basic")
-        comicImage.layer.position = destination
+        executeComicAnimation()
+        executeOtherFadeIn()
     }
     
     override func viewDidLayoutSubviews() {
@@ -147,7 +143,7 @@ class ComicDetailsVCViewController: UIViewController {
         ])
         setupButtonStack()
         handlePlaceholder()
-        containerView.addSubviews([backgroundImage, comicImage, closeButton, buttonContainer])
+        containerView.addSubviews([backgroundImage, closeButton, buttonContainer, comicImage])
         closeButton.addTarget(self, action: #selector(closeTapped), for: .touchUpInside)
         NSLayoutConstraint.activate([
             backgroundImage.widthAnchor.constraint(equalTo: containerView.widthAnchor),
@@ -205,7 +201,30 @@ class ComicDetailsVCViewController: UIViewController {
         }
     }
     
+    //MARK: - Animations
     
+    fileprivate func executeComicAnimation() {
+        let comicMoveAnimation = CABasicAnimation(keyPath: "position")
+        comicMoveAnimation.fromValue = CGPoint(x: comicImage.frame.origin.x + comicImage.frame.size.width/2, y: comicImage.frame.origin.y + comicImage.frame.size.height/2)
+        let centerY = backgroundImage.frame.height/2 + backgroundImage.frame.origin.y
+        let centerX = comicImage.frame.width/2 + COMIC_OPTIONS_SIDE_PADDING
+        let destination = CGPoint(x: centerX, y: centerY)
+        comicMoveAnimation.toValue = destination
+        comicMoveAnimation.duration = 0.5
+        comicMoveAnimation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+        UIView.animate(withDuration: 0.5, delay: 0, animations: {
+            self.comicImage.layer.add(comicMoveAnimation, forKey: "basic")
+            self.comicImage.layer.position = destination
+        })
+    }
+    
+    fileprivate func executeOtherFadeIn() {
+        UIView.animate(withDuration: 0.5, delay: 0, animations: {
+            self.view.backgroundColor = Color.background
+            self.backgroundImage.alpha = 1
+            self.buttonContainer.alpha = 1
+        })
+    }
     
     //MARK: - Helpers
     
