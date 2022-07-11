@@ -20,11 +20,18 @@ fileprivate let ADD_TO_LIBRARY_ICON_IMAGE = "plus.circle.fill"
 fileprivate let ADD_TO_LIBRARY_TEXT = "ADD TO LIBRARY"
 fileprivate let READ_OFFLINE_ICON_IMAGE = "arrow.down.to.line.compact"
 fileprivate let READ_OFFLINE_TEXT = "READ OFFLINE"
+fileprivate let PREVIOUS = "PREVIOUS"
+fileprivate let NEXT = "NEXT"
+fileprivate let THE_STORY = "The Story"
 fileprivate let OPTION_BUTTON_ITEM_HEIGHT: CGFloat = 30
 fileprivate let OPTION_BUTTON_ICON_DIMENSION: CGFloat = 15
 fileprivate let OPTION_BUTTON_ITEM_PADDING: CGFloat = 12
 fileprivate let OPTION_BUTTON_SEPERATOR_PADDING: CGFloat = 8
 fileprivate let COMIC_OPTIONS_SIDE_PADDING: CGFloat = 5
+fileprivate let TEXT_AREA_PADDING: CGFloat = 20
+fileprivate let LARGE_FONT_FIZE: CGFloat = 22
+fileprivate let MEDIUM_FONT_SIZE: CGFloat = 18
+fileprivate let SMALL_FONT_SIZE: CGFloat = 14
 
 protocol comicDetailsDelegate {
     func nextComicClicked()
@@ -90,6 +97,48 @@ class ComicDetailsVCViewController: UIViewController {
         return v
     }()
     
+    lazy var titleLabel: UILabel = {
+       let label = UILabel()
+        label.textColor = .lightGray
+        label.font = UIFont.systemFont(ofSize: LARGE_FONT_FIZE)
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.alpha = 0
+        return label
+    }()
+    
+    lazy var seriesLabel: UILabel = {
+       let label = UILabel()
+        label.textColor = .lightGray
+        label.font = UIFont.systemFont(ofSize: MEDIUM_FONT_SIZE, weight: .semibold)
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.alpha = 0
+        return label
+    }()
+    
+    lazy var descriptionLabel: UILabel = {
+       let label = UILabel()
+        label.textColor = .lightGray
+        label.font = UIFont.systemFont(ofSize: SMALL_FONT_SIZE)
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.alpha = 0
+        return label
+    }()
+    
+    lazy var descriptionSeperator: UIView = {
+        let v = UIView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.backgroundColor = .lightGray
+        v.alpha = 0
+        return v
+    }()
+    
+    
     //MARK: - Lifecycle
     init(image: UIImage?, comicFrame: CGRect, comic: Comic, isPlaceholderImage: Bool, delegate: comicDetailsDelegate) {
         self.isPlaceholderImage = isPlaceholderImage
@@ -108,6 +157,7 @@ class ComicDetailsVCViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setLabelTexts()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -139,24 +189,53 @@ class ComicDetailsVCViewController: UIViewController {
         NSLayoutConstraint.activate([
             containerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             containerView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
-            containerView.heightAnchor.constraint(equalToConstant: 900)
         ])
         setupButtonStack()
         handlePlaceholder()
-        containerView.addSubviews([backgroundImage, closeButton, buttonContainer, comicImage])
+        containerView.addSubviews([backgroundImage, closeButton, buttonContainer, titleLabel, descriptionSeperator, seriesLabel, descriptionLabel, comicImage])
         closeButton.addTarget(self, action: #selector(closeTapped), for: .touchUpInside)
         NSLayoutConstraint.activate([
             backgroundImage.widthAnchor.constraint(equalTo: containerView.widthAnchor),
             backgroundImage.heightAnchor.constraint(equalToConstant: self.view.frame.size.height/2),
             backgroundImage.topAnchor.constraint(equalTo: closeButton.bottomAnchor, constant: BUTTON_PADDING),
             backgroundImage.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            
             buttonContainer.leadingAnchor.constraint(equalTo: backgroundImage.leadingAnchor, constant: comicImage.frame.size.width + COMIC_OPTIONS_SIDE_PADDING*2),
             buttonContainer.trailingAnchor.constraint(equalTo: backgroundImage.trailingAnchor, constant: -COMIC_OPTIONS_SIDE_PADDING),
             buttonContainer.centerYAnchor.constraint(equalTo: backgroundImage.centerYAnchor),
             
             closeButton.topAnchor.constraint(equalTo: self.containerView.topAnchor, constant: BUTTON_PADDING),
-            closeButton.trailingAnchor.constraint(equalTo: self.containerView.trailingAnchor, constant: -BUTTON_PADDING)
+            closeButton.trailingAnchor.constraint(equalTo: self.containerView.trailingAnchor, constant: -BUTTON_PADDING),
+            
+            titleLabel.topAnchor.constraint(equalTo: backgroundImage.bottomAnchor, constant: TEXT_AREA_PADDING),
+            titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: TEXT_AREA_PADDING/2),
+            titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -TEXT_AREA_PADDING/2),
+            
+            descriptionSeperator.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: TEXT_AREA_PADDING),
+            descriptionSeperator.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            descriptionSeperator.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
+            descriptionSeperator.heightAnchor.constraint(equalToConstant: 1),
+            
+            seriesLabel.topAnchor.constraint(equalTo: descriptionSeperator.bottomAnchor, constant: TEXT_AREA_PADDING),
+            seriesLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            seriesLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
+
+            descriptionLabel.topAnchor.constraint(equalTo: seriesLabel.bottomAnchor, constant: TEXT_AREA_PADDING/2),
+            descriptionLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            descriptionLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
+            containerView.bottomAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: TEXT_AREA_PADDING)
         ])
+    }
+    
+    func setLabelTexts() {
+        titleLabel.text  = comicInfo.title ?? ""
+        seriesLabel.text = THE_STORY
+        //use attributed string to set line spacing of description
+        let descriptionAttributedString = NSMutableAttributedString(string: comicInfo.description ?? "")
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 2
+        descriptionAttributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, descriptionAttributedString.length))
+        descriptionLabel.attributedText = descriptionAttributedString
     }
     
     func setupButtonStack() {
@@ -223,6 +302,10 @@ class ComicDetailsVCViewController: UIViewController {
             self.view.backgroundColor = Color.background
             self.backgroundImage.alpha = 1
             self.buttonContainer.alpha = 1
+            self.titleLabel.alpha = 1
+            self.descriptionSeperator.alpha = 1
+            self.seriesLabel.alpha = 1
+            self.descriptionLabel.alpha = 1
         })
     }
     
