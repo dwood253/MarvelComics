@@ -21,13 +21,26 @@ class MarvelComicsUITests: XCTestCase {
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
-
-    func testExample() throws {
-        // UI tests must launch the application that they test.
+    
+    func testHomeCollectionExistsAndLoadedCells() throws {
         let app = XCUIApplication()
         app.launch()
-
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        let cells = app.collectionViews.children(matching: .any).element(boundBy: 0)
+        XCTAssertTrue(cells.waitForExistence(timeout: 3))
+    }
+    
+    func testComicDetailsViewLoads() throws {
+        let app = XCUIApplication()
+        app.launch()
+        
+        let collectionViewsQuery = app.collectionViews
+        collectionViewsQuery.children(matching: .cell).element(boundBy: 2).children(matching: .other).element.tap()
+        
+        let elementsQuery = app.scrollViews.otherElements
+        XCTAssertTrue(elementsQuery.staticTexts["READ NOW"].exists)
+        XCTAssertTrue(elementsQuery.staticTexts["MARK AS READ"].exists)
+        XCTAssertTrue(elementsQuery.staticTexts["ADD TO LIBRARY"].exists)
+        XCTAssertTrue(elementsQuery.staticTexts["READ OFFLINE"].exists)
     }
 
     func testLaunchPerformance() throws {
